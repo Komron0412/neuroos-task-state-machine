@@ -39,20 +39,6 @@ Terminal states:
 - Invalid transitions are rejected consistently
 - Business logic covered by **unit tests (pytest)**
 
----
-
-## Project Structure
-
-neuroos_app/
-├── api/        # FastAPI endpoints
-├── models/     # Task model
-├── services/   # Task State Machine logic
-└── main.py     # Application entrypoint
-
-tests/
-└── test_task_state_machine.py
-
----
 
 ## Run Locally
 
