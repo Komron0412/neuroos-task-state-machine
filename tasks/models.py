@@ -1,6 +1,4 @@
 from django.db import models
-from django.db.models import Q
-from .models import Task
 
 
 class TaskState(models.TextChoices):
@@ -21,8 +19,6 @@ class Task(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return f"{self.title} [{self.state}]"
 
 class TaskHold(models.Model):
     task = models.OneToOneField(
@@ -36,9 +32,6 @@ class TaskHold(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=["task"],
-                name="unique_task_hold"
+                name="unique_task_hold",
             )
         ]
-
-    def __str__(self):
-        return f"Hold for task {self.task_id}"
