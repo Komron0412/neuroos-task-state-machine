@@ -9,25 +9,20 @@ class TaskHoldAlreadyExists(Exception):
 
 
 @transaction.atomic
-def take_task(task_id: int):
-    """
-    Atomically:
-    - lock task row
-    - create task_hold only once
-    - move task to RUNNING
-    """
-
+def take_task(task_id: int, user):
     task = (
         Task.objects
         .select_for_update()
         .get(id=task_id)
     )
 
-    try:
-        TaskHold.objects.create(task=task)
-    except IntegrityError:
-        raise TaskHoldAlreadyExists(f"Task {task_id} already taken")
+    if task.owner is not None:
+        raise TaskHoldAlreadyExists("Task already taken")
 
+    TaskHold.objects.create(task=task)
+
+    task.owner = user
     TaskStateMachine.transition(task, TaskState.RUNNING)
 
+    task.save(update_fields=["owner", "state"])
     return task

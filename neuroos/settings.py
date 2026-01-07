@@ -40,7 +40,23 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'tasks',
+    'rest_framework_simplejwt',
+    'drf_spectacular',
 ]
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "NeuroOS Task API",
+    "DESCRIPTION": "Task state machine with DB invariants, JWT auth and permissions",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
